@@ -1,0 +1,520 @@
+[
+  {
+    "id": "1769098174514",
+    "title": "Civics L-7",
+    "description": "Public Facilities",
+    "cards": [
+      {
+        "front": "Why is private water supply uncommon globally?",
+        "back": "Water is a fundamental necessity that must remain affordable; however, private companies prioritize profit, often making water costs prohibitive for the public."
+      },
+      {
+        "front": "Is the water distribution in Chennai equitable?",
+        "back": "No; municipal supply meets only half the city's needs, causing the poor to rely on shared taps while the wealthy purchase private water."
+      },
+      {
+        "front": "What is the negative impact of farmers selling water to urban dealers?",
+        "back": "This practice leads to a severe deficit in water for village irrigation and drinking, while simultaneously causing groundwater levels to plummet."
+      },
+      {
+        "front": "Why are private hospitals and schools concentrated in major cities?",
+        "back": "These institutions offer expensive services that only affluent city residents can afford."
+      },
+      {
+        "front": "Are public facilities in India distributed fairly?",
+        "back": "No; while urban areas may have better infrastructure, nearby rural areas often face grave crises regarding electricity and water shortages."
+      },
+      {
+        "front": "What is the societal risk of privatizing education?",
+        "back": "High fees may result in quality education becoming a privilege for the rich, while the poor are left with substandard government facilities."
+      },
+      {
+        "front": "Contrast the water availability in Anna Nagar versus Mylapore",
+        "back": "Anna Nagar enjoys a regular supply and easy access to tankers, whereas Mylapore receives water only every two days."
+      },
+      {
+        "front": "How does the government secure funding for public facilities?",
+        "back": "The government allocates funds through an annual budget primarily sourced from taxes collected from citizens and businesses."
+      },
+      {
+        "front": "How does the Constitution protect access to water?",
+        "back": "Access to clean water is recognized as a fundamental right under Article 21, the Right to Life."
+      },
+      {
+        "front": "What are three ways to improve public infrastructure in India?",
+        "back": "Improvements can be made by building roads/metro lines, increasing healthcare personnel, and expanding the PDS ration system."
+      },
+      {
+        "front": "Why is safe drinking water essential for public health?",
+        "back": "Safe water is crucial for preventing water-related diseases such as diarrhea, dysentery, and cholera, which cause over 1,600 deaths in India daily."
+      },
+      {
+        "front": "What are some examples of public facilities other than water?",
+        "back": "Other essential facilities include healthcare, sanitation, electricity, public transport, and educational institutions."
+      },
+      {
+        "front": "What is a key characteristic of a public facility?",
+        "back": "A primary feature is that once provided, it can serve and benefit many people simultaneously."
+      },
+      {
+        "front": "Why is the government responsible for providing public facilities?",
+        "back": "Unlike private companies that seek profit, the government must ensure these vital services are accessible and affordable for all citizens' well-being."
+      },
+      {
+        "front": "How do middle-class residents in Chennai cope with water shortages?",
+        "back": "They often mitigate shortages by digging private borewells, purchasing water from tankers, or buying bottled water."
+      },
+      {
+        "front": "What did the Urban Water Commission recommend for daily water supply?",
+        "back": "The commission recommends a daily supply of 135 liters per person in urban areas."
+      },
+      {
+        "front": "What was the result of water privatization in Bolivia?",
+        "back": "Privatization caused water prices to skyrocket, leading to widespread protests and forcing the government to reclaim control."
+      },
+      {
+        "front": "Which Indian cities demonstrate that public water systems can be effective?",
+        "back": "Mumbai and Hyderabad have shown that government-run water departments can successfully manage supply with proper management."
+      },
+      {
+        "front": "How does the government in Chennai attempt to increase water availability?",
+        "back": "The government has implemented initiatives such as rainwater harvesting and regulating private distribution companies."
+      },
+      {
+        "front": "What is the government's primary responsibility regarding public resources?",
+        "back": "Its primary duty is to ensure essential facilities are provided equitably to all citizens to maintain human dignity."
+      },
+      {
+        "front": "What is the significance of Article 21 in relation to water?",
+        "back": "Article 21 guarantees the Right to Life, which the courts have affirmed includes the fundamental right to sufficient and affordable safe drinking water."
+      },
+      {
+        "front": "How many lives are lost daily in India due to water-related diseases?",
+        "back": "Over 1,600 Indians, many of whom are children under five, die every day from diseases such as diarrhea and cholera."
+      },
+      {
+        "front": "What are the primary sources of government revenue for public facilities?",
+        "back": "The government funds these services through taxes collected from citizens and businesses, as well as duties, fees, and public sector enterprises."
+      },
+      {
+        "front": "How does water access in the Saidapet Slum compare to the Urban Water Commission's recommendation?",
+        "back": "Slum residents share one tap and receive water for only 40 minutes a day (less than 20 liters), which is significantly lower than the recommended 135 liters per person."
+      },
+      {
+        "front": "What role does the annual budget play in public facilities?",
+        "back": "The budget outlines the government’s previous expenditures and planned spending to ensure facilities like education and transport meet the population's needs."
+      },
+      {
+        "front": "Why are private companies often unsuitable for providing basic public facilities?",
+        "back": "Private companies operate for profit, whereas public facilities are tied to basic human needs and must be provided regardless of profit to ensure the well-being of all."
+      },
+      {
+        "front": "What specific water supply initiatives has the Chennai government undertaken?",
+        "back": "The government has promoted rainwater harvesting and engaged private companies for distribution under strict government regulation."
+      },
+      {
+        "front": "What is the \"smart growth\" characteristic of public facilities?",
+        "back": "Once these facilities are made available, they possess the ability to benefit many individuals simultaneously, contributing to collective social welfare."
+      },
+      {
+        "front": "How does the middle class mitigate the failure of municipal water supply?",
+        "back": "The middle class uses private resources to dig borewells, buy tanker water, or purchase bottled water."
+      },
+      {
+        "front": "What is the ultimate solution to water shortages according to the text?",
+        "back": "The solution lies in strengthening public systems rather than privatization to ensure every citizen can live a dignified life."
+      },
+      {
+        "front": "What is the primary role of the government regarding public facilities?",
+        "back": "The government is responsible for providing essential services that may not generate profit but are vital for the population's well-being."
+      },
+      {
+        "front": "How does water access in Anna Nagar differ from other areas?",
+        "back": "Residents in Anna Nagar enjoy a regular supply and can easily arrange for tankers even during times of scarcity."
+      },
+      {
+        "front": "What is the characteristic of water in the Mylapore borewells?",
+        "back": "The borewell water in Mylapore is brackish, which forces residents to rely on expensive alternative sources."
+      },
+      {
+        "front": "How often is water available in Madipakkam?",
+        "back": "In Madipakkam, water is available only once every four days."
+      },
+      {
+        "front": "What specific water-related diseases are mentioned as major health threats?",
+        "back": "Diarrhea, dysentery, and cholera are identified as significant causes of death in India."
+      },
+      {
+        "front": "Who bears the brunt of water supply shortfalls in Chennai?",
+        "back": "The poor suffer the most because they lack the financial resources to find alternative water sources."
+      },
+      {
+        "front": "What does the budget presented in Parliament detail?",
+        "back": "It outlines the government's expenditures from the previous year and the planned spending for the upcoming year."
+      },
+      {
+        "front": "Why are private entities sometimes ineffective for the poor?",
+        "back": "Private companies often charge rates for essential services like healthcare and education that are unaffordable for many."
+      },
+      {
+        "front": "What is a major characteristic of public facilities like schools or transport?",
+        "back": "They are designed to serve multiple people simultaneously and contribute to the collective welfare of society."
+      },
+      {
+        "front": "What is the daily water consumption of a person in a luxury hotel?",
+        "back": "A person in a luxury hotel may consume up to 1,600 liters of water per day."
+      },
+      {
+        "front": "What percentage of Chennai's water needs are met by the municipal supply?",
+        "back": "The municipal water supply meets only about half of the city's total needs."
+      },
+      {
+        "front": "What happened to water prices in Bolivia after privatization?",
+        "back": "The cost of water skyrocketed, which led to widespread public protests."
+      },
+      {
+        "front": "How do many private companies in Chennai obtain their water?",
+        "back": "They buy water from nearby towns and villages, utilizing a fleet of over 13,000 tankers."
+      },
+      {
+        "front": "What financial arrangement do water dealers have with farmers?",
+        "back": "Dealers pay farmers an advance for the right to exploit water resources on their agricultural land."
+      },
+      {
+        "front": "How can the government stop the exploitation of rural groundwater?",
+        "back": "The government has the authority to implement and enforce strict laws against overuse."
+      },
+      {
+        "front": "What is the disparity in water access for slum dwellers?",
+        "back": "People living in slums often struggle with less than 20 liters of water per day."
+      },
+      {
+        "front": "Which courts have affirmed the right to safe drinking water?",
+        "back": "Both the High Courts and the Supreme Court have reinforced this as a fundamental right."
+      },
+      {
+        "front": "What happens if government schools are not \"up to the mark\"?",
+        "back": "Weaker sections of society are deprived of quality education, which deepens social inequality."
+      },
+      {
+        "front": "What are \"PRS ration shops\" mentioned in the ways to improve facilities?",
+        "back": "These are shops where the government provides grains and vegetables at subsidized rates."
+      },
+      {
+        "front": "What is the ultimate goal of strengthening public systems?",
+        "back": "The goal is to ensure that every citizen has access to basic resources needed to live a dignified life."
+      }
+    ]
+  },
+  {
+    "id": "1769098248387",
+    "title": "Science L-11",
+    "description": "Chemical Effects of Electric Current",
+    "cards": [
+      {
+        "front": "Conduction of Electricity",
+        "back": "This refers to the movement of electrically charged particles through a material, which can generate an electric current when influenced by an electric field."
+      },
+      {
+        "front": "Good Conductors",
+        "back": "These are substances that allow electric current to pass through them with ease, such as silver, gold, and aluminium."
+      },
+      {
+        "front": "Bad Conductors",
+        "back": "These are substances that allow only a very small amount of electric current to pass through them, such as wood, paper, air, and rubber."
+      },
+      {
+        "front": "Electrolytes",
+        "back": "These are solutions of acids, bases, or salts in water that conduct electricity."
+      },
+      {
+        "front": "Heating Effect of Electric Current",
+        "back": "This is the phenomenon where heat is produced when an electric current flows through a conductor, such as the filament in a glowing bulb."
+      },
+      {
+        "front": "LED Bulbs in Testing",
+        "back": "These bulbs are preferred for testing electrical conductivity because they can sense even a minute amount of electric current."
+      },
+      {
+        "front": "Chemical Effect of Electric Current",
+        "back": "This is defined as the passage of an electric current through a conducting solution or electrolyte that results in chemical changes."
+      },
+      {
+        "front": "William Nicholson (1800)",
+        "back": "He was the first to discover the chemical effect of current, specifically that current passed through water causes it to dissociate into hydrogen and oxygen ions."
+      },
+      {
+        "front": "Electrode",
+        "back": "A conductor that carries electric current into non-metals or other poor conductors."
+      },
+      {
+        "front": "Electrolysis",
+        "back": "The process of producing a chemical change in an electrolyte by passing an electric current through it."
+      },
+      {
+        "front": "Anode",
+        "back": "The electrode that is connected to the positive terminal of a battery."
+      },
+      {
+        "front": "Cathode",
+        "back": "The electrode that is connected to the negative terminal of a battery."
+      },
+      {
+        "front": "Electroplating",
+        "back": "A process where a layer of one metal is deposited over another metal using the passage of electric current."
+      },
+      {
+        "front": "Galvanization",
+        "back": "The specific process of depositing a coating of zinc onto iron to protect it from corrosion."
+      },
+      {
+        "front": "Electrolytic Cell",
+        "back": "The vessel or container that holds the cathode, anode, and electrolyte during the process of electrolysis."
+      },
+      {
+        "front": "In what year and by whom was the chemical effect of current discovered?",
+        "back": "William Nicholson discovered it in 1800."
+      },
+      {
+        "front": "Why is \"bad conductor\" a more accurate term than \"insulator\"?",
+        "back": "Most substances can conduct electricity under certain conditions, making \"bad conductor\" a more precise description of relative resistance."
+      },
+      {
+        "front": "Why are LED bulbs utilized instead of standard bulbs for testing conductivity?",
+        "back": "LEDs can detect minute amounts of current that are insufficient to heat a standard bulb's filament to a glow."
+      },
+      {
+        "front": "What occurs when electric current is passed through acidified water?",
+        "back": "The water dissociates into oxygen bubbles at the anode (+) and hydrogen bubbles at the cathode (-)."
+      },
+      {
+        "front": "What is the scientific definition of an electrolyte?",
+        "back": "An electrolyte is a solution containing acids, bases, or salts that conducts electricity via the movement of ions."
+      },
+      {
+        "front": "What are the three primary effects produced by an electric current?",
+        "back": "The three effects are heating, magnetic, and chemical."
+      },
+      {
+        "front": "What is galvanization and its primary purpose?",
+        "back": "It is the deposition of a zinc layer onto iron to prevent corrosion and rusting."
+      },
+      {
+        "front": "Why is it hazardous to handle electrical appliances with wet hands or during rain?",
+        "back": "Water containing dissolved salts is a good conductor, significantly increasing the risk of a fatal electric shock."
+      },
+      {
+        "front": "Which electrode is used for the impure metal in copper purification?",
+        "back": "The thick rod of impure copper is attached to the positive terminal (anode)."
+      },
+      {
+        "front": "Why is tin electroplated onto iron for food storage cans?",
+        "back": "Tin is less reactive than iron, preventing the food from reacting with the iron and becoming contaminated."
+      },
+      {
+        "front": "What are the main objectives of electroplating?",
+        "back": "The process is used to protect metals from corrosion and to provide a decorative, shiny appearance."
+      },
+      {
+        "front": "What are the components of an electrolytic cell?",
+        "back": "An electrolytic cell consists of a vessel, two electrodes (anode and cathode), and an electrolyte solution."
+      },
+      {
+        "front": "Which substance is used to make the handles of tools for electrical work and why?",
+        "back": "Rubber or plastic is used because they are bad conductors of electricity, protecting the user from electric shock."
+      },
+      {
+        "front": "What occurs when a tester's ends are dipped into lemon juice?",
+        "back": "The tester's bulb glows because lemon juice is an electrolyte that conducts electricity."
+      },
+      {
+        "front": "Why is salt added to distilled water for experiments?",
+        "back": "Distilled water is a bad conductor; adding salt provides ions that allow it to conduct electricity."
+      },
+      {
+        "front": "What are the specific gas proportions observed by William Nicholson in 1800?",
+        "back": "He observed that the volume of hydrogen produced at the negative electrode is twice the volume of oxygen produced at the positive electrode."
+      },
+      {
+        "front": "How does an LED differ from a standard bulb in a tester?",
+        "back": "A standard bulb requires a high heating effect to glow, whereas an LED (Light Emitting Diode) can glow even with a very weak current."
+      },
+      {
+        "front": "Why is it advised not to touch electrical switches with wet hands?",
+        "back": "Water, especially tap water, contains minerals that make it conductive, which can lead to a fatal electric shock."
+      },
+      {
+        "front": "What is the purpose of the chromium plating on bicycle handlebars and car parts?",
+        "back": "Chromium is used because it has a shiny appearance, does not corrode, and resists scratches."
+      },
+      {
+        "front": "Why are iron objects like bridges and automobile frames galvanized?",
+        "back": "They are coated with zinc to prevent them from rusting and to provide structural longevity."
+      },
+      {
+        "front": "What determines the direction of metal transfer in electroplating?",
+        "back": "Metal is transferred from the anode (positive electrode) and deposited onto the cathode (negative electrode)."
+      },
+      {
+        "front": "List various objects commonly electroplated in daily life",
+        "back": "Taps, bicycle rims, gas burners, tin cans, metallic almirahs, and belt buckles."
+      },
+      {
+        "front": "Relationship between the thickness of the impure copper rod and the purification process",
+        "back": "The thick impure copper rod acts as the anode, dissolving into the solution to replenish the copper ions deposited on the thin pure copper plate."
+      },
+      {
+        "front": "Effect of electric current on the chemical composition of a solution",
+        "back": "The passage of current causes a chemical reaction that may result in gas bubbles, metal deposits, or changes in the solution's color."
+      },
+      {
+        "front": "Definition of an electric field in the context of conduction",
+        "back": "It is the influence that causes electrically charged particles to move through a material, thereby creating an electric current."
+      },
+      {
+        "front": "Why air is classified as a bad conductor rather than an insulator",
+        "back": "Under extreme conditions, such as during a lightning strike, air can conduct electricity, proving it is not a perfect insulator."
+      },
+      {
+        "front": "The role of free electrons or ions in liquid conduction",
+        "back": "These particles act as the charge carriers that allow electricity to flow through a liquid solution."
+      },
+      {
+        "front": "Observation when testing vinegar with a conduction bulb",
+        "back": "Vinegar is a weak electrolyte; it allows some current to pass, but the bulb may glow dimly compared to a salt solution."
+      },
+      {
+        "front": "Polarity of the terminal where metal deposition occurs during electroplating",
+        "back": "The object to be coated is always attached to the negative terminal (cathode) so that the positive metal ions are drawn to it."
+      },
+      {
+        "front": "Composition of the solution used in copper electroplating",
+        "back": "A copper sulphate solution is typically used because it dissociates into free copper and sulphate ions when energized."
+      },
+      {
+        "front": "Scientific reason for the dissociation of copper sulphate",
+        "back": "The electric current breaks the chemical bonds of the salt, releasing positively charged copper ions."
+      },
+      {
+        "front": "Why most liquids that conduct electricity are solutions of acids, bases, or salts",
+        "back": "These substances naturally break down into ions when dissolved in water, which are essential for electrical transport."
+      },
+      {
+        "front": "Necessity of cleaning metal plates before electroplating",
+        "back": "Metal plates must be cleaned with sandpaper to remove oxide layers and ensure a smooth, uniform deposition of the new metal."
+      },
+      {
+        "front": "Distinction between tap water and distilled water regarding safety",
+        "back": "Tap water contains minerals that make it conductive and dangerous near electricity, whereas distilled water lacks these ions."
+      },
+      {
+        "front": "Purpose of the magnetic needle test in Activity 14.2",
+        "back": "It is used to detect very weak currents that might not be strong enough to light even an LED."
+      },
+      {
+        "front": "Reaction observed at the positive electrode during water electrolysis",
+        "back": "Oxygen gas is liberated in the form of bubbles as the water molecules break apart."
+      },
+      {
+        "front": "Reaction observed at the negative electrode during water electrolysis",
+        "back": "Hydrogen gas is liberated, appearing as bubbles at the cathode."
+      },
+      {
+        "front": "Reason for coating iron with chromium in car bumpers",
+        "back": "Chromium provides a hard, scratch-resistant surface that maintains a high-gloss finish and prevents rust."
+      },
+      {
+        "front": "Factors influencing the thickness of a metal layer during electroplating",
+        "back": "The duration of the current flow and the strength of the electrical current determine how much metal is deposited."
+      },
+      {
+        "front": "Environmental concern related to electroplating factories",
+        "back": "The disposal of used conducting solutions is a major concern because they contain toxic chemicals that can pollute the environment."
+      },
+      {
+        "front": "Why a tester might not work even if the liquid is a conductor",
+        "back": "The battery might be exhausted, the connections might be loose, or the bulb might be fused."
+      },
+      {
+        "front": "Nature of the solution used for electroplating copper",
+        "back": "A copper sulphate solution is employed as it provides the necessary ions for the electrolytic process."
+      },
+      {
+        "front": "Behavior of copper ions during electrolysis",
+        "back": "Being positively charged, free copper ions are instinctively drawn toward the negative electrode (cathode)."
+      },
+      {
+        "front": "Method to restore the copper concentration in a solution during plating",
+        "back": "The loss of copper from the solution is replenished by the dissolution of the impure copper anode."
+      },
+      {
+        "front": "Conductivity of distilled water vs. tap water",
+        "back": "Distilled water is a bad conductor due to the absence of salts, whereas tap water contains minerals that facilitate conduction."
+      },
+      {
+        "front": "Primary function of a tester in electrical experiments",
+        "back": "It is used to determine whether a particular liquid or solid allows the passage of an electric current."
+      },
+      {
+        "front": "Visual evidence of a chemical effect during electrolysis",
+        "back": "The appearance of gas bubbles on the electrodes or a change in the color of the electrolytic solution."
+      },
+      {
+        "front": "Requirement for a standard bulb to illuminate",
+        "back": "It requires a significant heating effect generated by a sufficient current to make the filament glow."
+      },
+      {
+        "front": "Ability of air to conduct electricity",
+        "back": "While generally a bad conductor, air can conduct electricity under high-voltage conditions, such as during a lightning strike."
+      },
+      {
+        "front": "Material composition of a typical LED",
+        "back": "It is a semiconductor device that emits light when even a minute current passes through it."
+      },
+      {
+        "front": "Direction of current flow in an external circuit",
+        "back": "Current traditionally flows from the positive terminal (anode) to the negative terminal (cathode)."
+      },
+      {
+        "front": "Function of \"free electrons\" in metallic conduction",
+        "back": "These are mobile electrons within the metal lattice that shift under an electric field to create current."
+      },
+      {
+        "front": "Function of \"ions\" in liquid conduction",
+        "back": "These are charged atoms or molecules that move through the electrolyte to transport electrical charge."
+      },
+      {
+        "front": "Practical reason for plating iron with zinc",
+        "back": "Zinc acts as a sacrificial layer that corrodes in place of the iron, extending the life of bridges and vehicles."
+      },
+      {
+        "front": "Aesthetic reason for chromium plating",
+        "back": "Chromium provides a high-luster, decorative finish that is also resistant to surface scratches."
+      },
+      {
+        "front": "Distinction between a \"good conductor\" and a \"bad conductor\"",
+        "back": "Good conductors allow current to flow with minimal resistance, while bad conductors offer high resistance."
+      },
+      {
+        "front": "Chemical reaction at the anode during water electrolysis",
+        "back": "Water molecules lose electrons to form oxygen gas and hydrogen ions."
+      },
+      {
+        "front": "Chemical reaction at the cathode during water electrolysis",
+        "back": "Hydrogen ions gain electrons to form hydrogen gas."
+      },
+      {
+        "front": "Why handle-grips of electrical testers are made of plastic",
+        "back": "Plastic is a bad conductor that prevents the current from reaching the user's hand."
+      },
+      {
+        "front": "Result of dipping a tester into an acid solution",
+        "back": "The acid dissociates into ions, completing the circuit and causing the bulb or LED to glow."
+      },
+      {
+        "front": "Definition of an \"Electrolytic Cell\"",
+        "back": "A specialized container or system where electrical energy is converted into chemical energy through electrolysis."
+      }
+    ]
+  }
+]

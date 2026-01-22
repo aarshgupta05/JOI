@@ -1,0 +1,26 @@
+[
+  {
+    "id": "lamp-1",
+    "name": "Living Lamp",
+    "type": "light",
+    "desc": "Main living room lamp",
+    "on": true,
+    "brightness": 0
+  },
+  {
+    "id": "plug-1",
+    "name": "Coffee Maker",
+    "type": "plug",
+    "desc": "Smart plug (kitchen)",
+    "on": false,
+    "brightness": 0
+  },
+  {
+    "id": "therm-1",
+    "name": "Thermostat",
+    "type": "climate",
+    "desc": "Hall thermostat",
+    "on": true,
+    "brightness": 0
+  }
+]

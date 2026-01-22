@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Flashcard Repository</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .card-flip-inner {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .flipped .card-flip-inner {
+            transform: rotateY(180deg);
+        }
+        .card-face {
+            backface-visibility: hidden;
+        }
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Slide Animations */
+        #flashcard-container {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        
+        .slide-in-right {
+            animation: slideInRight 0.4s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .slide-in-left {
+            animation: slideInLeft 0.4s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            from { transform: translateX(-50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 font-sans min-h-screen">
+
+    <div id="app" class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight">Flashcard Lexicon</h1>
+                <p class="text-slate-500 italic">Curate, categorize, and master your knowledge base.</p>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="viewController.showLibrary()" class="px-4 py-2 bg-white border border-slate-200 rounded-lg shadow-sm hover:bg-slate-50 transition">My Decks</button>
+                <button onclick="modalController.open('deckModal')" class="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition font-medium">+ New Deck</button>
+                <button onclick="window.location.href='/main'" class="px-4 py-2 bg-white border border-slate-200 rounded-lg shadow-sm hover:bg-slate-50 transition">Go Back to Lexicon</button>
+            </div>
+        </header>
+
+        <main id="main-content"></main>
+    </div>
+
+    <!-- Modals -->
+    <div id="deckModal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6">
+            <h2 class="text-xl font-bold mb-4 text-slate-800">Initialize New Deck</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Nomenclature (Title)</label>
+                    <input type="text" id="deckTitleInput" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="e.g., Advanced Linguistics">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Description</label>
+                    <textarea id="deckDescInput" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Brief summary..."></textarea>
+                </div>
+                <div class="flex justify-end gap-3 pt-2">
+                    <button onclick="modalController.close('deckModal')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition">Cancel</button>
+                    <button onclick="dataManager.createDeck()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">Create Deck</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cardModal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6">
+            <h2 class="text-xl font-bold mb-4 text-slate-800">Append New Flashcard</h2>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Prompt (Front)</label>
+                    <textarea id="cardFrontInput" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Enter term..."></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Resolution (Back)</label>
+                    <textarea id="cardBackInput" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Enter definition..."></textarea>
+                </div>
+                <div class="flex justify-end gap-3 pt-2">
+                    <button onclick="modalController.close('cardModal')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition">Cancel</button>
+                    <button onclick="dataManager.createCard()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">Save Card</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="bulkModal" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl max-w-2xl w-full p-6">
+            <h2 class="text-xl font-bold mb-2 text-slate-800">Bulk Data Assimilation</h2>
+            <p class="text-sm text-slate-500 mb-4">Standardized double-colon (::) delimiter.</p>
+            <div class="space-y-4">
+                <div class="bg-indigo-50 border border-indigo-100 p-4 rounded-xl flex justify-between items-center text-sm font-mono">
+                    <code class="text-indigo-700">Question :: Answer</code>
+                    <button onclick="dataManager.copyTemplate()" class="text-xs bg-white border border-indigo-200 text-indigo-600 px-3 py-1.5 rounded-lg font-bold">Copy Syntax</button>
+                </div>
+                <textarea id="bulkInput" class="w-full h-64 px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none font-mono text-sm" placeholder="Flashcard :: Result"></textarea>
+                <div class="flex justify-end gap-3 pt-2">
+                    <button onclick="modalController.close('bulkModal')" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition">Cancel</button>
+                    <button onclick="dataManager.processBulk()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition font-bold shadow-lg">Execute Import</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const state = {
+            decks: [],
+            currentDeckId: null,
+            currentCardIndex: 0,
+            lastAnimationDirection: 'right',
+            exportMenuOpen: false
+        };
+
+        async function saveToStorage() {
+            await fetch('/api/storage/flashcard_decks', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(state.decks)
+            });
+        }
+
+        async function loadFromStorage() {
+            const res = await fetch('/api/storage/flashcard_decks');
+            const data = await res.json();
+            state.decks = data || [];
+        }
+
+        // Click outside listener for dropdowns
+        window.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('export-menu');
+            const button = document.getElementById('export-btn');
+            if (state.exportMenuOpen && dropdown && !dropdown.contains(e.target) && !button.contains(e.target)) {
+                state.exportMenuOpen = false;
+                dropdown.classList.add('hidden');
+            }
+        });
+
+        const viewController = {
+            showLibrary: () => {
+                state.currentDeckId = null;
+                state.exportMenuOpen = false;
+                const container = document.getElementById('main-content');
+                if (state.decks.length === 0) {
+                    container.innerHTML = `<div class="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-slate-200"><div class="text-5xl mb-4">🗂️</div><h3 class="text-xl font-semibold text-slate-700">No Decks Manifested</h3><button onclick="modalController.open('deckModal')" class="mt-6 px-6 py-3 bg-indigo-600 text-white rounded-xl shadow-lg">Initialize First Deck</button></div>`;
+                    return;
+                }
+                container.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">${state.decks.map(deck => `
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition cursor-pointer flex flex-col justify-between group" onclick="viewController.showDeck('${deck.id}')">
+                        <div><div class="flex justify-between items-start mb-2"><h3 class="text-xl font-bold text-slate-800">${deck.title}</h3><span class="text-xs font-bold bg-indigo-50 text-indigo-600 px-2 py-1 rounded-full">${deck.cards.length} Cards</span></div><p class="text-slate-500 text-sm line-clamp-2">${deck.description || 'No description.'}</p></div>
+                        <div class="mt-6 flex justify-between items-center"><span class="text-indigo-600 font-medium text-sm group-hover:underline">Open Study Session →</span><button onclick="event.stopPropagation(); dataManager.deleteDeck('${deck.id}')" class="p-2 text-slate-300 hover:text-red-500 transition"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg></button></div>
+                    </div>`).join('')}</div>`;
+            },
+
+            toggleExportMenu: () => {
+                const menu = document.getElementById('export-menu');
+                state.exportMenuOpen = !state.exportMenuOpen;
+                if (state.exportMenuOpen) {
+                    menu.classList.remove('hidden');
+                } else {
+                    menu.classList.add('hidden');
+                }
+            },
+
+            showDeck: (deckId) => {
+                state.currentDeckId = deckId;
+                const deck = state.decks.find(d => d.id === deckId);
+                const container = document.getElementById('main-content');
+                const animationClass = state.lastAnimationDirection === 'right' ? 'slide-in-right' : 'slide-in-left';
+
+                container.innerHTML = `
+                    <div class="mb-6 flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <button onclick="viewController.showLibrary()" class="text-slate-500 hover:text-indigo-600 font-bold">← Back</button>
+                            <h2 class="text-2xl font-bold text-slate-800">${deck.title}</h2>
+                        </div>
+                        <div class="flex gap-2 items-center">
+                            <button onclick="dataManager.shuffleDeck('${deck.id}')" class="text-sm font-bold text-amber-600 bg-amber-50 px-3 py-1.5 rounded-lg hover:bg-amber-100 transition">Shuffle</button>
+                            
+                            <div class="relative">
+                                <button id="export-btn" onclick="viewController.toggleExportMenu()" class="text-sm font-bold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-lg hover:bg-slate-200 transition flex items-center gap-1">
+                                    Export <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                </button>
+                                <div id="export-menu" class="hidden absolute right-0 mt-2 w-48 bg-white border border-slate-200 rounded-xl shadow-xl z-10 py-2 border border-slate-100">
+                                    <button onclick="dataManager.exportDeck('${deck.id}', false)" class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 transition text-slate-700">Full Deck (::)</button>
+                                    <button onclick="dataManager.exportDeck('${deck.id}', true)" class="w-full text-left px-4 py-2 text-sm hover:bg-indigo-50 text-indigo-600 transition font-medium">Questions Only</button>
+                                </div>
+                            </div>
+
+                            <button onclick="modalController.open('bulkModal')" class="text-sm font-bold text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-lg hover:bg-indigo-100 transition">Bulk Import</button>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <div class="lg:col-span-2 space-y-6">
+                            ${deck.cards.length > 0 ? `
+                                <div id="flashcard-container" class="perspective-1000 h-80 cursor-pointer ${animationClass}" onclick="viewController.flipCard()">
+                                    <div class="card-flip-inner relative w-full h-full text-center">
+                                        <div class="card-face absolute inset-0 bg-white rounded-3xl shadow-xl flex items-center justify-center p-8 border-b-4 border-indigo-500 overflow-y-auto">
+                                            <p class="text-2xl font-medium text-slate-800">${deck.cards[state.currentCardIndex].front}</p>
+                                        </div>
+                                        <div class="card-face card-back absolute inset-0 bg-indigo-600 text-white rounded-3xl shadow-xl flex items-center justify-center p-8 overflow-y-auto">
+                                            <p class="text-xl leading-relaxed">${deck.cards[state.currentCardIndex].back}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between bg-white p-4 rounded-xl shadow-sm">
+                                    <div class="flex gap-2">
+                                        <button onclick="viewController.prevCard()" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg">Previous</button>
+                                        <button onclick="viewController.resetToStart()" class="px-4 py-2 text-indigo-600 hover:bg-indigo-50 rounded-lg text-sm font-bold">Back to 1</button>
+                                    </div>
+                                    <span class="text-slate-500 font-mono">${state.currentCardIndex + 1} / ${deck.cards.length}</span>
+                                    <button onclick="viewController.nextCard()" class="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg">Next</button>
+                                </div>
+                            ` : `<div class="h-80 bg-slate-100 rounded-3xl flex flex-col items-center justify-center border-2 border-dashed border-slate-300 text-slate-500">Inventory vacant.</div>`}
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 h-fit">
+                            <h3 class="font-bold mb-4 flex justify-between items-center text-slate-800">Inventory <button onclick="modalController.open('cardModal')" class="text-xs bg-indigo-600 text-white px-2 py-1 rounded hover:bg-indigo-700 transition">+ Add</button></h3>
+                            <div class="max-h-96 overflow-y-auto space-y-2 pr-2">
+                                ${deck.cards.map((card, idx) => `
+                                    <div class="text-xs p-3 bg-slate-50 rounded-lg border border-slate-100 group flex justify-between items-start cursor-pointer hover:border-indigo-200" onclick="state.lastAnimationDirection='right'; state.currentCardIndex = ${idx}; viewController.showDeck('${deck.id}')">
+                                        <span class="truncate pr-2 ${state.currentCardIndex === idx ? 'text-indigo-600 font-bold' : 'text-slate-700'}">${card.front}</span>
+                                        <button onclick="event.stopPropagation(); dataManager.deleteCard(${idx})" class="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition">✕</button>
+                                    </div>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                // Reset menu state on re-render
+                state.exportMenuOpen = false;
+            },
+
+            nextCard: () => {
+                const deck = state.decks.find(d => d.id === state.currentDeckId);
+                if (deck && state.currentCardIndex < deck.cards.length - 1) {
+                    state.lastAnimationDirection = 'right';
+                    state.currentCardIndex++;
+                    viewController.showDeck(state.currentDeckId);
+                }
+            },
+
+            prevCard: () => {
+                if (state.currentCardIndex > 0) {
+                    state.lastAnimationDirection = 'left';
+                    state.currentCardIndex--;
+                    viewController.showDeck(state.currentDeckId);
+                }
+            },
+
+            resetToStart: () => {
+                state.lastAnimationDirection = 'left';
+                state.currentCardIndex = 0;
+                viewController.showDeck(state.currentDeckId);
+            },
+
+            flipCard: () => {
+                const card = document.getElementById('flashcard-container');
+                if (card) card.classList.toggle('flipped');
+            }
+        };
+
+        const modalController = {
+            open: (id) => document.getElementById(id).classList.remove('hidden'),
+            close: (id) => document.getElementById(id).classList.add('hidden')
+        };
+
+        const dataManager = {
+            createDeck: () => {
+                const title = document.getElementById('deckTitleInput').value.trim();
+                if (!title) return;
+                state.decks.push({ id: Date.now().toString(), title, description: document.getElementById('deckDescInput').value.trim(), cards: [] });
+                saveToStorage();
+                modalController.close('deckModal');
+                viewController.showLibrary();
+            },
+
+            deleteDeck: (id) => {
+                if (confirm("Purge deck?")) {
+                    state.decks = state.decks.filter(d => d.id !== id);
+                    saveToStorage();
+                    viewController.showLibrary();
+                }
+            },
+
+            shuffleDeck: (id) => {
+                const deck = state.decks.find(d => d.id === id);
+                if (!deck || deck.cards.length < 2) return;
+                for (let i = deck.cards.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [deck.cards[i], deck.cards[j]] = [deck.cards[j], deck.cards[i]];
+                }
+                state.currentCardIndex = 0;
+                saveToStorage();
+                viewController.showDeck(id);
+            },
+
+            createCard: () => {
+                const front = document.getElementById('cardFrontInput').value.trim();
+                const back = document.getElementById('cardBackInput').value.trim();
+                if (!front || !back) return;
+                state.decks.find(d => d.id === state.currentDeckId).cards.push({ front, back });
+                saveToStorage();
+                modalController.close('cardModal');
+                viewController.showDeck(state.currentDeckId);
+            },
+
+            copyTemplate: () => {
+                const text = "Concept :: Explanation";
+                const el = document.createElement('textarea');
+                el.value = text;
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                document.body.removeChild(el);
+            },
+
+            exportDeck: (deckId, questionsOnly = false) => {
+                const deck = state.decks.find(d => d.id === deckId);
+                if (!deck || deck.cards.length === 0) {
+                    alert("Empty decks cannot be exported.");
+                    return;
+                }
+                
+                let exportString = "";
+                if (questionsOnly) {
+                    exportString = deck.cards.map(c => c.front).join('\n');
+                } else {
+                    exportString = deck.cards.map(c => `${c.front} :: ${c.back}`).join('\n');
+                }
+
+                const el = document.createElement('textarea');
+                el.value = exportString;
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                document.body.removeChild(el);
+                
+                const type = questionsOnly ? "Questions" : "Full deck content";
+                alert(`${type} copied to clipboard successfully.`);
+                
+                // Close menu after selection
+                state.exportMenuOpen = false;
+                document.getElementById('export-menu').classList.add('hidden');
+            },
+
+            processBulk: () => {
+                const input = document.getElementById('bulkInput').value;
+                const deck = state.decks.find(d => d.id === state.currentDeckId);
+                const lines = input.split('\n').filter(l => l.trim() !== '');
+                let count = 0;
+                lines.forEach(line => {
+                    if (line.includes('::')) {
+                        const parts = line.split('::');
+                        const front = parts[0].trim();
+                        const back = parts.slice(1).join('::').trim();
+                        if (front && back) { deck.cards.push({ front, back }); count++; }
+                    }
+                });
+                if(count > 0) {
+                    saveToStorage();
+                    modalController.close('bulkModal');
+                    viewController.showDeck(state.currentDeckId);
+                }
+            },
+
+            deleteCard: (idx) => {
+                const deck = state.decks.find(d => d.id === state.currentDeckId);
+                deck.cards.splice(idx, 1);
+                state.currentCardIndex = Math.max(0, Math.min(state.currentCardIndex, deck.cards.length - 1));
+                saveToStorage();
+                viewController.showDeck(state.currentDeckId);
+            }
+        };
+
+        window.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if (!state.currentDeckId) return;
+            if (e.code === 'Space') { e.preventDefault(); viewController.flipCard(); }
+            if (e.code === 'ArrowRight') viewController.nextCard();
+            if (e.code === 'ArrowLeft') viewController.prevCard();
+        });
+
+        window.onload = async () => {
+            await loadFromStorage();
+            viewController.showLibrary();
+        };
+    </script>
+</body>
+</html>

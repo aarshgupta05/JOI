@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lexicon Mastery & Quiz Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital@0;1&display=swap');
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            scroll-behavior: smooth;
+        }
+
+        .serif { font-family: 'Playfair Display', serif; }
+
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 40px -10px rgba(31, 38, 135, 0.1);
+        }
+
+        .gradient-bg {
+            background: radial-gradient(circle at 0% 0%, #fdfbfb 0%, #ebedee 100%);
+            background-attachment: fixed;
+        }
+
+        .progress-bar-fill {
+            transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .floating {
+            animation: floating 8s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(0.5deg); }
+        }
+
+        .history-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 1);
+            border-color: #6366f1;
+            box-shadow: 0 15px 30px -10px rgba(99, 102, 241, 0.1);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+
+        .checkbox-custom:checked + div {
+            background-color: #6366f1;
+            border-color: #6366f1;
+        }
+
+        .preset-card:hover {
+            border-color: #6366f1;
+            background: #f8faff;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen p-4 md:p-10 selection:bg-indigo-100">
+    <div class="max-w-5xl mx-auto relative">
+        <!-- Aesthetic background blobs -->
+        <div class="fixed top-[-10%] left-[-10%] w-[50%] h-[50%] bg-indigo-50 rounded-full blur-[140px] -z-10 opacity-40"></div>
+        <div class="fixed bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-50 rounded-full blur-[140px] -z-10 opacity-40"></div>
+
+        <header class="mb-16 text-center floating">
+            <h1 class="text-6xl font-extralight text-slate-800 tracking-tighter mb-4">
+                Lexicon <span class="font-semibold text-indigo-600 italic serif">Mastery</span>
+            </h1>
+            <p class="text-slate-400 italic text-xl max-w-xl mx-auto font-light leading-relaxed">
+                Elevating linguistic proficiency through sophisticated assessment and analytical refinement.
+            </p>
+            <button onclick="window.location.href='/main'" class="px-4 py-2 bg-white border border-slate-200 rounded-lg shadow-sm hover:bg-slate-50 transition">Go Back to Lexicon</button>
+        </header>
+
+        <!-- MAIN DASHBOARD -->
+        <div id="setupView" class="space-y-12 fade-in">
+            <div id="inputCard" class="glass-morphism rounded-[3rem] p-10 transition-all duration-700 hover:shadow-2xl border border-white/60">
+                <div class="space-y-6">
+                    <div class="flex justify-between items-end">
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest ml-2">Lexical Repository (Term :: Definition)</label>
+                        <span class="text-[10px] text-slate-300 italic">Separate entries with new lines</span>
+                    </div>
+                    <textarea id="inputArea" rows="8" class="w-full p-8 rounded-[2rem] border border-slate-100 focus:ring-8 focus:ring-indigo-50 focus:border-indigo-200 outline-none transition-all font-mono text-sm leading-relaxed shadow-inner bg-white/50" placeholder="Eloquence :: Fluent or persuasive speaking or writing.&#10;Perspicacity :: The quality of having a ready insight into things."></textarea>
+                    
+                    <div class="pt-4">
+                        <button id="openConfigBtn" class="w-full bg-slate-900 hover:bg-black text-white px-8 py-5 rounded-2xl font-semibold transition-all shadow-2xl hover:scale-[1.01] flex items-center justify-center gap-3">
+                            <span>Prepare Assessment</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HISTORY -->
+            <div id="historyContainer" class="space-y-6 max-w-4xl mx-auto">
+                <div class="flex justify-between items-center px-4">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">Historical Repository</h3>
+                    <button onclick="confirmClearHistory()" class="text-[10px] text-slate-300 hover:text-red-400 uppercase font-bold tracking-widest transition-colors">Purge Archives</button>
+                </div>
+                <div id="historyList" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+            </div>
+        </div>
+
+        <!-- CONFIGURATION PANEL (MODAL) -->
+        <div id="configOverlay" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-md z-[150] flex items-center justify-center p-6">
+            <div class="glass-morphism max-w-3xl w-full rounded-[3rem] p-10 shadow-3xl border border-white/60 fade-in overflow-y-auto max-h-[90vh] custom-scroll">
+                <div class="flex justify-between items-center mb-10">
+                    <h2 class="text-3xl font-light text-slate-800 serif italic">Assessment <span class="font-bold not-italic">Parameters</span></h2>
+                    <button id="closeConfigBtn" class="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+
+                <!-- Presets -->
+                <div class="mb-10">
+                    <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Linguistic Presets</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <button onclick="applyPreset('quick')" class="preset-card p-4 rounded-2xl border border-slate-100 text-left transition-all">
+                            <span class="block font-bold text-slate-700 text-sm">Sprint</span>
+                            <span class="text-[10px] text-slate-400">5 Questions • 15s Timer</span>
+                        </button>
+                        <button onclick="applyPreset('standard')" class="preset-card p-4 rounded-2xl border border-indigo-100 bg-indigo-50/30 text-left transition-all">
+                            <span class="block font-bold text-indigo-600 text-sm">Standard</span>
+                            <span class="text-[10px] text-indigo-400">All terms • No timer</span>
+                        </button>
+                        <button onclick="applyPreset('mastery')" class="preset-card p-4 rounded-2xl border border-slate-100 text-left transition-all">
+                            <span class="block font-bold text-slate-700 text-sm">Mastery</span>
+                            <span class="text-[10px] text-slate-400">AI-Complex • 45s Timer</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <!-- Column 1: Modes -->
+                    <div class="space-y-8">
+                        <div>
+                            <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Question Typology</h3>
+                            <div class="space-y-3">
+                                <label class="flex items-center gap-3 p-4 bg-white/50 rounded-2xl border border-slate-50 cursor-pointer hover:border-indigo-200 transition-all">
+                                    <input type="checkbox" checked class="checkbox-custom hidden" id="typeMC">
+                                    <div class="w-5 h-5 border-2 border-slate-200 rounded flex items-center justify-center transition-all">
+                                        <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                    </div>
+                                    <span class="text-sm font-semibold text-slate-600">Multiple Choice</span>
+                                </label>
+                                <label class="flex items-center gap-3 p-4 bg-white/50 rounded-2xl border border-slate-50 cursor-pointer hover:border-indigo-200 transition-all">
+                                    <input type="checkbox" checked class="checkbox-custom hidden" id="typeShort">
+                                    <div class="w-5 h-5 border-2 border-slate-200 rounded flex items-center justify-center transition-all">
+                                        <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                                    </div>
+                                    <span class="text-sm font-semibold text-slate-600">Short Answer</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Intelligence Mode</h3>
+                            <div class="flex items-center gap-4 p-4 bg-indigo-50/50 rounded-2xl border border-indigo-100">
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="aiToggle" class="sr-only peer">
+                                    <div class="w-12 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-[20px] after:w-[20px] after:transition-all peer-checked:bg-indigo-600"></div>
+                                </label>
+                                <div>
+                                    <span class="text-sm font-bold text-slate-700 block">AI Synthesis</span>
+                                    <span class="text-[10px] text-slate-400">Generates complex analogies & context</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Column 2: Quantities -->
+                    <div class="space-y-8">
+                        <div>
+                            <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Volume & Time</h3>
+                            <div class="space-y-6">
+                                <div class="space-y-2">
+                                    <div class="flex justify-between text-[11px] font-bold text-slate-500 uppercase">
+                                        <span>Max Questions</span>
+                                        <span id="valQuestions">All</span>
+                                    </div>
+                                    <input type="range" id="rangeQuestions" min="1" max="50" value="50" class="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-indigo-600">
+                                </div>
+                                <div class="space-y-4 pt-2">
+                                    <label class="flex items-center gap-3">
+                                        <input type="checkbox" id="timerToggle" class="sr-only peer">
+                                        <div class="w-10 h-5 bg-slate-200 rounded-full peer peer-checked:bg-indigo-600 after:content-[''] after:absolute after:mt-[2.5px] after:ml-[2.5px] after:h-[15px] after:w-[15px] after:bg-white after:rounded-full after:transition-all peer-checked:after:translate-x-[20px]"></div>
+                                        <span class="text-sm font-semibold text-slate-600">Enable Temporal Limit</span>
+                                    </label>
+                                    <div id="timerInputWrap" class="opacity-30 pointer-events-none transition-opacity">
+                                        <input type="number" id="timerSeconds" value="30" class="w-full bg-slate-50 p-4 rounded-xl border border-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 flex gap-4">
+                    <button id="cancelConfigBtn" class="flex-1 px-8 py-5 rounded-2xl font-bold text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition-all uppercase tracking-widest text-xs">Cancel</button>
+                    <button id="initiateBtn" class="flex-[2] bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-5 rounded-2xl font-bold transition-all shadow-xl shadow-indigo-100 uppercase tracking-widest text-xs">Begin Evaluation</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUIZ INTERFACE -->
+        <div id="quizView" class="hidden glass-morphism rounded-[3.5rem] p-10 md:p-16 shadow-3xl border border-white/80 relative overflow-hidden">
+            <div class="flex flex-col mb-12">
+                <div class="flex justify-between items-center mb-6">
+                    <div class="flex items-center gap-4">
+                        <button id="backBtn" class="p-3 hover:bg-indigo-50 rounded-full transition-colors text-slate-300 hover:text-indigo-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                        </button>
+                        <span id="timerDisplay" class="hidden text-2xl font-mono font-bold text-red-500 bg-red-50/50 px-6 py-2 rounded-2xl border border-red-100 tabular-nums">00:00</span>
+                    </div>
+                    <span id="progressText" class="text-xs font-bold text-slate-300 tracking-[0.3em] uppercase">Assessment In Progress</span>
+                </div>
+                <div class="w-full bg-slate-100/50 h-1.5 rounded-full overflow-hidden">
+                    <div id="progressBar" class="progress-bar-fill h-full bg-indigo-600 w-0"></div>
+                </div>
+            </div>
+            
+            <div id="questionWrapper" class="min-h-[300px] flex flex-col justify-center"></div>
+
+            <div class="mt-16 pt-10 border-t border-slate-100/60 flex flex-col sm:flex-row justify-between items-center gap-8">
+                <div class="flex gap-10 items-center">
+                    <button id="skipBtn" class="text-slate-300 hover:text-slate-500 text-xs font-bold uppercase tracking-widest transition-colors">Bypass</button>
+                    <button onclick="handleTerminationRequest()" class="text-red-300 hover:text-red-500 text-xs font-bold uppercase tracking-widest transition-colors">Abbreviate</button>
+                </div>
+                <button id="nextBtn" class="hidden bg-slate-900 text-white px-12 py-4 rounded-2xl font-bold transition-all hover:bg-black w-full sm:w-auto uppercase tracking-widest text-xs">Proceed</button>
+            </div>
+        </div>
+
+        <!-- MODALS & OVERLAYS -->
+        <div id="modalOverlay" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[200] flex items-center justify-center p-4">
+            <div class="glass-morphism max-w-lg w-full rounded-[2.5rem] p-10 shadow-3xl border border-white/50 fade-in flex flex-col">
+                <h3 id="modalTitle" class="text-2xl font-bold text-slate-800 serif mb-4">Notification</h3>
+                <div id="modalBody" class="text-slate-500 text-sm leading-relaxed mb-10 overflow-y-auto max-h-[40vh] custom-scroll pr-2"></div>
+                <div id="modalActions" class="flex flex-col gap-3"></div>
+            </div>
+        </div>
+
+        <!-- RESULTS VIEW -->
+        <div id="resultsView" class="hidden space-y-10 fade-in">
+            <div class="glass-morphism rounded-[3.5rem] p-12 md:p-20 shadow-3xl border border-white/80 text-center">
+                <h2 class="text-4xl font-light text-slate-800 mb-2 serif italic">Analytical <span class="font-bold not-italic">Overview</span></h2>
+                <div class="flex items-center justify-center gap-10 my-12">
+                    <div class="text-center">
+                        <span class="text-8xl font-thin text-indigo-600 tracking-tighter" id="finalScoreDisplay">0%</span>
+                        <p class="text-[10px] text-slate-400 uppercase tracking-[0.3em] font-bold mt-2">Accuracy Metric</p>
+                    </div>
+                    <div class="h-24 w-px bg-slate-100"></div>
+                    <div class="text-center">
+                        <span class="text-5xl font-thin text-slate-400" id="rawScoreDisplay">0</span>
+                        <p class="text-[10px] text-slate-400 uppercase tracking-[0.3em] font-bold mt-2">Verified Answers</p>
+                    </div>
+                </div>
+                <div id="analysisGrid" class="text-left space-y-4 max-h-[450px] overflow-y-auto custom-scroll pr-4 mb-12"></div>
+                <button onclick="location.reload()" class="bg-indigo-600 text-white px-16 py-5 rounded-2xl font-bold shadow-2xl hover:bg-indigo-700 transition-all uppercase tracking-[0.2em] text-xs">Return to Terminal</button>
+            </div>
+        </div>
+
+        <!-- LOADING STAGE -->
+        <div id="loadingOverlay" class="hidden fixed inset-0 bg-white/90 backdrop-blur-xl flex items-center justify-center z-[300]">
+            <div class="flex flex-col items-center">
+                <div class="w-20 h-20 border-[3px] border-slate-50 border-t-indigo-600 rounded-full animate-spin mb-8"></div>
+                <h3 class="text-2xl font-extralight text-slate-800 serif italic">Synthesizing <span class="font-bold not-italic">Linguistics</span></h3>
+                <p id="loadingStage" class="text-[10px] text-slate-400 uppercase tracking-widest mt-4">Filtering content artifacts...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const apiKey = ""; 
+        let currentQuestions = [];
+        let userResponses = []; 
+        let currentIndex = 0;
+        let timerInterval = null;
+        let timeLeft = 0;
+        let assessmentStartTime = null;
+        let recoveryMode = false;
+        let omittedIndices = [];
+
+        const elements = {
+            inputArea: document.getElementById('inputArea'),
+            setupView: document.getElementById('setupView'),
+            configOverlay: document.getElementById('configOverlay'),
+            quizView: document.getElementById('quizView'),
+            resultsView: document.getElementById('resultsView'),
+            loadingOverlay: document.getElementById('loadingOverlay'),
+            openConfigBtn: document.getElementById('openConfigBtn'),
+            closeConfigBtn: document.getElementById('closeConfigBtn'),
+            cancelConfigBtn: document.getElementById('cancelConfigBtn'),
+            initiateBtn: document.getElementById('initiateBtn'),
+            aiToggle: document.getElementById('aiToggle'),
+            timerToggle: document.getElementById('timerToggle'),
+            timerSeconds: document.getElementById('timerSeconds'),
+            rangeQuestions: document.getElementById('rangeQuestions'),
+            valQuestions: document.getElementById('valQuestions'),
+            typeMC: document.getElementById('typeMC'),
+            typeShort: document.getElementById('typeShort'),
+            progressBar: document.getElementById('progressBar'),
+            questionWrapper: document.getElementById('questionWrapper'),
+            nextBtn: document.getElementById('nextBtn'),
+            skipBtn: document.getElementById('skipBtn'),
+            backBtn: document.getElementById('backBtn'),
+            timerDisplay: document.getElementById('timerDisplay'),
+            historyList: document.getElementById('historyList'),
+            modalOverlay: document.getElementById('modalOverlay'),
+            modalTitle: document.getElementById('modalTitle'),
+            modalBody: document.getElementById('modalBody'),
+            modalActions: document.getElementById('modalActions'),
+            progressText: document.getElementById('progressText')
+        };
+
+        function sanitizeContent(str) {
+            if (!str) return "";
+            return str
+                .replace(/[\*\#\_]/g, '') 
+                .replace(/\(s\)/gi, '')   
+                .replace(/\s+/g, ' ')     
+                .trim();
+        }
+
+        elements.openConfigBtn.onclick = () => {
+            if (elements.inputArea.value.trim().length < 5) return;
+            const lines = elements.inputArea.value.trim().split('\n').filter(l => l.includes('::'));
+            const lineCount = lines.length;
+            if (lineCount === 0) return;
+            elements.rangeQuestions.max = lineCount;
+            elements.rangeQuestions.value = lineCount;
+            updateRangeDisplay();
+            elements.configOverlay.classList.remove('hidden');
+        };
+
+        elements.closeConfigBtn.onclick = elements.cancelConfigBtn.onclick = () => {
+            elements.configOverlay.classList.add('hidden');
+        };
+
+        elements.rangeQuestions.oninput = updateRangeDisplay;
+        function updateRangeDisplay() {
+            elements.valQuestions.textContent = elements.rangeQuestions.value;
+        }
+
+        elements.timerToggle.onchange = () => {
+            const wrap = document.getElementById('timerInputWrap');
+            wrap.classList.toggle('opacity-30', !elements.timerToggle.checked);
+            wrap.classList.toggle('pointer-events-none', !elements.timerToggle.checked);
+        };
+
+        function applyPreset(type) {
+            const lines = elements.inputArea.value.trim().split('\n').filter(l => l.includes('::'));
+            const lineCount = lines.length;
+            switch(type) {
+                case 'quick':
+                    elements.rangeQuestions.value = Math.min(5, lineCount);
+                    elements.timerToggle.checked = true;
+                    elements.timerSeconds.value = 15;
+                    elements.aiToggle.checked = false;
+                    break;
+                case 'standard':
+                    elements.rangeQuestions.value = lineCount;
+                    elements.timerToggle.checked = false;
+                    elements.aiToggle.checked = false;
+                    break;
+                case 'mastery':
+                    elements.rangeQuestions.value = lineCount;
+                    elements.timerToggle.checked = true;
+                    elements.timerSeconds.value = 45;
+                    elements.aiToggle.checked = true;
+                    break;
+            }
+            updateRangeDisplay();
+            elements.timerToggle.onchange();
+        }
+
+        elements.initiateBtn.onclick = async () => {
+            const rawText = elements.inputArea.value.trim();
+            assessmentStartTime = new Date().toLocaleString();
+            elements.configOverlay.classList.add('hidden');
+            if (elements.aiToggle.checked) await generateAIQuiz(rawText); else generateOfflineQuiz(rawText);
+        };
+
+        function generateOfflineQuiz(text) {
+            const lines = text.split('\n').filter(l => l.includes('::'));
+            const limit = parseInt(elements.rangeQuestions.value);
+            const selectedLines = shuffle(lines).slice(0, limit);
+            
+            const types = [];
+            if (elements.typeMC.checked) types.push('multiple-choice');
+            if (elements.typeShort.checked) types.push('text-entry');
+            if (types.length === 0) types.push('multiple-choice');
+
+            currentQuestions = selectedLines.map((line, idx) => {
+                const [word, ...rest] = line.split('::').map(s => s.trim());
+                const def = rest.join(' :: ');
+                const isReversed = Math.random() > 0.5;
+                const type = types[Math.floor(Math.random() * types.length)];
+                return {
+                    id: idx,
+                    question: isReversed ? `Definition for: <span class="font-semibold text-indigo-600">"${word}"</span>` : `Identify the term for: <span class="italic text-slate-600">"${def}"</span>`,
+                    correct: isReversed ? def : word,
+                    type,
+                    options: type === 'multiple-choice' ? shuffle([ (isReversed ? def : word), ...generateDistractors(isReversed ? def : word, lines, isReversed)]) : []
+                };
+            });
+            startQuiz();
+        }
+
+        async function generateAIQuiz(text) {
+            elements.loadingOverlay.classList.remove('hidden');
+            const limit = parseInt(elements.rangeQuestions.value);
+            const types = [];
+            if (elements.typeMC.checked) types.push('mc');
+            if (elements.typeShort.checked) types.push('text');
+            if (types.length === 0) types.push('mc');
+
+            const systemPrompt = `You are a linguist. Create ${limit} academic questions from the provided list. 
+            Allowed formats: ${types.join(', ')}.
+            CLEANLINESS RULE: Return PLAIN TEXT only. Do NOT use **bold**, ## headers, or asterisks in question text or answers.
+            Output JSON only: [{"q": "question text", "a": "correct answer", "t": "mc|text", "o": ["opt1", "opt2", "opt3", "opt4"]}]`;
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        contents: [{ parts: [{ text: `Input: ${text}` }] }],
+                        systemInstruction: { parts: [{ text: systemPrompt }] },
+                        generationConfig: { responseMimeType: "application/json" } 
+                    })
+                });
+                const result = await response.json();
+                const data = JSON.parse(result.candidates[0].content.parts[0].text);
+                currentQuestions = data.slice(0, limit).map((i, idx) => ({ 
+                    id: idx, 
+                    question: sanitizeContent(i.q), 
+                    correct: sanitizeContent(i.a), 
+                    type: i.t === 'mc' ? 'multiple-choice' : 'text-entry', 
+                    options: (i.o || []).map(sanitizeContent)
+                }));
+                startQuiz();
+            } catch (e) { generateOfflineQuiz(text); } finally { elements.loadingOverlay.classList.add('hidden'); }
+        }
+
+        function generateDistractors(correct, lines, isRev) {
+            const pool = lines.map(l => l.split('::')[isRev ? 1 : 0]?.trim()).filter(x => x && x !== correct);
+            return shuffle([...new Set(pool)]).slice(0, 3);
+        }
+
+        function shuffle(a) { return [...a].sort(() => Math.random() - 0.5); }
+
+        function startQuiz() {
+            currentIndex = 0; userResponses = []; recoveryMode = false;
+            elements.setupView.classList.add('hidden');
+            elements.quizView.classList.remove('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            clearInterval(timerInterval);
+            const q = currentQuestions[currentIndex];
+            const existing = userResponses.find(r => r.index === currentIndex);
+            const progTotal = recoveryMode ? omittedIndices.length : currentQuestions.length;
+            const progCurrent = recoveryMode ? (omittedIndices.indexOf(currentIndex) + 1) : (currentIndex + 1);
+            
+            elements.progressBar.style.width = `${(progCurrent / progTotal) * 100}%`;
+            elements.progressText.textContent = `${recoveryMode ? 'Rectification' : 'Linguistic Inquiry'} ${progCurrent} / ${progTotal}`;
+            
+            elements.nextBtn.classList.add('hidden');
+            elements.skipBtn.style.display = (existing && existing.status !== 'Skipped') ? 'none' : 'block';
+            elements.backBtn.style.visibility = (recoveryMode ? (omittedIndices.indexOf(currentIndex) > 0) : (currentIndex > 0)) ? 'visible' : 'hidden';
+            
+            let html = `<div class="fade-in"><h3 class="text-2xl md:text-3xl text-slate-800 font-light mb-12 leading-tight serif italic">${q.question}</h3><div id="answerArea" class="grid grid-cols-1 gap-5">`;
+            const isAnswered = existing && existing.status !== 'Skipped';
+
+            if (q.type === 'multiple-choice') {
+                q.options.forEach(opt => {
+                    const isUserChoice = isAnswered && existing.user === opt;
+                    const isCorrectChoice = opt === q.correct;
+                    let style = "border-slate-100 bg-white/40 hover:bg-white/80 hover:border-indigo-200";
+                    if (isAnswered) {
+                        if (isUserChoice && existing.status === 'Correct') style = "border-emerald-500 bg-emerald-50 text-emerald-800 ring-4 ring-emerald-50";
+                        else if (isUserChoice) style = "border-red-500 bg-red-50 text-red-800 ring-4 ring-red-50";
+                        else if (isCorrectChoice) style = "border-emerald-400 bg-emerald-50/50 text-emerald-600";
+                        else style = "opacity-40 grayscale";
+                    }
+                    html += `<button onclick="handleSelection(this, '${opt.replace(/'/g, "\\'")}')" ${isAnswered ? 'disabled' : ''} class="w-full text-left p-6 rounded-[1.5rem] border transition-all duration-300 font-medium ${style}">${opt}</button>`;
+                });
+            } else {
+                const val = isAnswered ? existing.user : "";
+                let style = isAnswered ? (existing.status === 'Correct' ? "border-emerald-500 bg-emerald-50 text-emerald-800" : "border-red-500 bg-red-50 text-red-800") : "border-slate-100 bg-white/60";
+                html += `<div class="relative"><input type="text" id="textInput" value="${val}" ${isAnswered ? 'disabled' : ''} onkeypress="if(event.key==='Enter') checkTextAnswer()" class="w-full p-8 rounded-[1.5rem] border serif italic text-xl outline-none focus:border-indigo-300 transition-all ${style}" placeholder="Enter term..." autofocus autocomplete="off">`;
+                if (!isAnswered) html += `<button onclick="checkTextAnswer()" class="absolute right-4 top-4 bottom-4 bg-indigo-600 text-white px-8 rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-lg">Verify</button>`;
+                html += `</div>`;
+                if (isAnswered && existing.status !== 'Correct') html += `<div class="mt-6 p-6 bg-indigo-50/50 rounded-2xl border border-indigo-100 text-indigo-700 text-sm font-bold flex justify-between items-center fade-in"><span>Standard Lexeme:</span> <span class="text-xl serif italic font-normal">${q.correct}</span></div>`;
+            }
+            elements.questionWrapper.innerHTML = html + `</div></div>`;
+            if (isAnswered) revealNext(); else startTimer();
+        }
+
+        elements.backBtn.onclick = () => {
+            if (recoveryMode) currentIndex = omittedIndices[omittedIndices.indexOf(currentIndex) - 1];
+            else currentIndex--;
+            showQuestion();
+        };
+
+        elements.skipBtn.onclick = () => {
+            clearInterval(timerInterval);
+            recordResponse('Skipped', currentQuestions[currentIndex].correct, 'Skipped');
+            revealNext();
+            elements.nextBtn.click();
+        };
+
+        elements.nextBtn.onclick = () => {
+            if (recoveryMode) {
+                const pos = omittedIndices.indexOf(currentIndex);
+                if (pos < omittedIndices.length - 1) { currentIndex = omittedIndices[pos + 1]; showQuestion(); }
+                else handleTerminationRequest();
+            } else {
+                if (++currentIndex < currentQuestions.length) showQuestion(); else handleTerminationRequest();
+            }
+        };
+
+        window.handleSelection = (btn, selected) => {
+            clearInterval(timerInterval);
+            const isCorrect = selected === currentQuestions[currentIndex].correct;
+            recordResponse(selected, currentQuestions[currentIndex].correct, isCorrect ? 'Correct' : 'Incorrect');
+            showQuestion();
+        };
+
+        window.checkTextAnswer = () => {
+            const input = document.getElementById('textInput');
+            if (!input || !input.value.trim()) return;
+            const isClose = isAnswerCloseEnough(input.value.trim(), currentQuestions[currentIndex].correct);
+            recordResponse(input.value.trim(), currentQuestions[currentIndex].correct, isClose ? 'Correct' : 'Incorrect');
+            showQuestion();
+        };
+
+        function isAnswerCloseEnough(user, correct) {
+            const u = user.toLowerCase().trim();
+            const c = correct.toLowerCase().trim();
+            if (u === c) return true;
+            const matrix = Array.from({ length: c.length + 1 }, (_, i) => [i]);
+            for (let j = 0; j <= u.length; j++) matrix[0][j] = j;
+            for (let i = 1; i <= c.length; i++) {
+                for (let j = 1; j <= u.length; j++) {
+                    if (c[i-1] === u[j-1]) matrix[i][j] = matrix[i-1][j-1];
+                    else matrix[i][j] = Math.min(matrix[i-1][j-1]+1, matrix[i][j-1]+1, matrix[i-1][j]+1);
+                }
+            }
+            return matrix[c.length][u.length] <= Math.max(1, Math.floor(c.length * 0.25));
+        }
+
+        function recordResponse(user, correct, status) {
+            const idx = userResponses.findIndex(r => r.index === currentIndex);
+            const entry = { question: currentQuestions[currentIndex].question, user, correct, status, index: currentIndex };
+            if (idx > -1) userResponses[idx] = entry; else userResponses.push(entry);
+        }
+
+        function revealNext() { elements.nextBtn.classList.remove('hidden'); elements.skipBtn.style.display = 'none'; }
+
+        function handleTerminationRequest() {
+            clearInterval(timerInterval);
+            omittedIndices = currentQuestions.map((_, i) => i).filter(i => {
+                const resp = userResponses.find(r => r.index === i);
+                return !resp || resp.status === 'Skipped';
+            });
+
+            if (omittedIndices.length > 0) {
+                showModal("Unresolved Inquiries", `There are **${omittedIndices.length}** terms currently bypassed.`, [
+                    { label: "Rectify Omissions", primary: true, action: () => { closeModal(); recoveryMode = true; currentIndex = omittedIndices[0]; showQuestion(); } },
+                    { label: "Submit Final Analysis", primary: false, action: showResults },
+                    { label: "Cancel & Continue", primary: false, action: () => { closeModal(); startTimer(); } }
+                ]);
+            } else {
+                showModal("Conclude Assessment", "Are you certain you wish to terminate the current session and view your results?", [
+                    { label: "Finalize & Submit", primary: true, action: showResults },
+                    { label: "Cancel & Continue", primary: false, action: () => { closeModal(); startTimer(); } }
+                ]);
+            }
+        }
+
+        function showResults() {
+            closeModal();
+            elements.quizView.classList.add('hidden');
+            elements.resultsView.classList.remove('hidden');
+            const results = currentQuestions.map((q, i) => userResponses.find(r => r.index === i) || { status: 'Omitted', user: 'None', correct: q.correct, question: q.question, index: i });
+            const correctCount = results.filter(r => r.status === 'Correct').length;
+            const accuracy = Math.round((correctCount / currentQuestions.length) * 100);
+            document.getElementById('finalScoreDisplay').textContent = accuracy + "%";
+            document.getElementById('rawScoreDisplay').textContent = correctCount;
+            document.getElementById('analysisGrid').innerHTML = results.map(r => `
+                <div class="p-6 rounded-[2rem] border bg-white border-slate-100/50 fade-in flex flex-col gap-4">
+                    <p class="text-sm text-slate-700 font-medium leading-relaxed">${r.question}</p>
+                    <div class="grid grid-cols-2 gap-8 text-[10px] uppercase font-bold tracking-widest">
+                        <div>
+                            <p class="text-slate-300 mb-2">Submitted</p>
+                            <span class="${r.status === 'Correct' ? 'text-emerald-600' : 'text-red-500'} bg-slate-50 px-3 py-1 rounded-full">${r.user || 'None'}</span>
+                        </div>
+                        <div>
+                            <p class="text-slate-300 mb-2">Linguistic Standard</p>
+                            <span class="text-indigo-600">${r.correct}</span>
+                        </div>
+                    </div>
+                </div>`).join('');
+            saveToPersistentStorage({ date: assessmentStartTime, title: "Linguistic Evaluation", accuracy, results });
+        }
+
+        function startTimer() {
+            if (!elements.timerToggle.checked) return;
+            if (timeLeft <= 0) timeLeft = parseInt(elements.timerSeconds.value);
+            elements.timerDisplay.classList.remove('hidden');
+            elements.timerDisplay.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
+            timerInterval = setInterval(() => {
+                if (--timeLeft <= 0) { clearInterval(timerInterval); autoSubmit(); }
+                elements.timerDisplay.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function autoSubmit() {
+            const input = document.getElementById('textInput');
+            if (input && !input.disabled && input.value.trim()) checkTextAnswer();
+            else { recordResponse('Timeout', currentQuestions[currentIndex].correct, 'Timeout'); showQuestion(); }
+        }
+
+        async function saveToPersistentStorage(record) {
+            const res = await fetch('/api/storage/lexicon_archives');
+            const history = (await res.json()) || [];
+            history.unshift(record);
+            const trimmed = history.slice(0, 10);
+            await fetch('/api/storage/lexicon_archives', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(trimmed)
+            });
+            renderHistory();
+        }
+
+        async function renderHistory() {
+            if (!elements.historyList) return;
+            const res = await fetch('/api/storage/lexicon_archives');
+            const history = (await res.json()) || [];
+            if (history.length === 0) {
+                elements.historyList.innerHTML = `<p class="col-span-full text-center text-slate-300 italic py-20 text-sm bg-white/10 rounded-[2.5rem] border border-dashed border-slate-200">The archives are currently devoid of records.</p>`;
+                return;
+            }
+            elements.historyList.innerHTML = history.map((item, idx) => `
+                <div class="history-card glass-morphism p-6 rounded-[2rem] flex justify-between items-center transition-all border border-slate-100 cursor-pointer" onclick="viewHistoryItem(${idx})">
+                    <div class="flex flex-col gap-1">
+                        <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest">${item.date}</span>
+                        <span class="text-slate-700 font-semibold">${item.accuracy}% Accuracy</span>
+                        <span class="text-[10px] text-slate-300">${item.results.length} Terms Evaluated</span>
+                    </div>
+                    <button onclick="confirmDeleteHistoryItem(event, ${idx})" class="p-3 text-slate-200 hover:text-red-500 transition-colors rounded-full">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    </button>
+                </div>`).join('');
+        }
+
+        function showModal(title, body, actions) {
+             elements.modalTitle.textContent = title;
+             elements.modalBody.innerHTML = body.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+             elements.modalActions.innerHTML = '';
+             actions.forEach(a => {
+                 const btn = document.createElement('button');
+                 btn.className = a.primary ? "w-full p-4 rounded-2xl bg-indigo-600 text-white font-bold text-xs tracking-widest uppercase" : "w-full p-4 rounded-2xl border border-slate-100 text-slate-400 font-bold text-xs tracking-widest uppercase";
+                 btn.textContent = a.label;
+                 btn.onclick = a.action;
+                 elements.modalActions.appendChild(btn);
+             });
+             elements.modalOverlay.classList.remove('hidden');
+         }
+
+         function closeModal() { elements.modalOverlay.classList.add('hidden'); }
+
+        /**
+         * Confirms the purge of the entire repository
+         */
+        window.confirmClearHistory = () => {
+            showModal("Confirm Purge", "Are you certain you wish to **obliterate** the entire Historical Repository? This action is irreversible.", [
+                { label: "Purge Archives", primary: true, action: async () => {
+                    await fetch('/api/storage/lexicon_archives', { method: 'DELETE' });
+                    renderHistory();
+                    closeModal();
+                } },
+                { label: "Cancel", primary: false, action: closeModal }
+            ]);
+        };
+
+        /**
+         * Confirms the deletion of a specific record
+         */
+        window.confirmDeleteHistoryItem = (e, i) => { 
+            e.stopPropagation(); 
+            showModal("Confirm Deletion", "Do you wish to permanently remove this specific assessment record from the archives?", [
+                { label: "Delete Record", primary: true, action: async () => { 
+                    const res = await fetch('/api/storage/lexicon_archives');
+                    const h = (await res.json()) || [];
+                    h.splice(i, 1);
+                    await fetch('/api/storage/lexicon_archives', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(h)
+                    });
+                    renderHistory(); 
+                    closeModal(); 
+                } },
+                { label: "Cancel", primary: false, action: closeModal }
+            ]); 
+        };
+
+        window.viewHistoryItem = async (idx) => { 
+            const res = await fetch('/api/storage/lexicon_archives');
+            const arr = (await res.json()) || [];
+            const item = arr[idx];
+            if (!item) return;
+            const gridHtml = item.results.map(r => `
+                <div class="mb-4 p-4 rounded-xl bg-slate-50 border border-slate-100">
+                    <p class="text-[10px] text-slate-400 mb-2">${r.question}</p>
+                    <div class="flex justify-between text-xs font-bold">
+                        <span class="${r.status === 'Correct' ? 'text-green-600' : 'text-red-500'}">User: ${r.user}</span>
+                        <span class="text-indigo-600">Correct: ${r.correct}</span>
+                    </div>
+                </div>
+            `).join('');
+            showModal(`Historical Record`, `<div class="custom-scroll max-h-[40vh] overflow-y-auto">${gridHtml}</div>`, [{label: 'Close', primary: true, action: closeModal}]); 
+        };
+         
+        document.addEventListener('DOMContentLoaded', renderHistory);
+    </script>
+</body>
+</html>

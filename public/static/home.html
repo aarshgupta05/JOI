@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Home — JOI Automation</title>
+  <link rel="stylesheet" href="../Style/home.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital@0;1&display=swap');
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            scroll-behavior: smooth;
+        }
+
+        .serif { font-family: 'Playfair Display', serif; }
+
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 40px -10px rgba(31, 38, 135, 0.1);
+        }
+
+        .gradient-bg {
+            background: radial-gradient(circle at 0% 0%, #fdfbfb 0%, #ebedee 100%);
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen p-4 md:p-10 selection:bg-indigo-100">
+
+  <div id="app" class="max-w-5xl mx-auto p-4 md:p-8">
+        <header class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight">Welcome to Study Guide</h1>
+                <p class="text-slate-500 italic">Curate, categorize, and master your knowledge base.</p>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="window.location.href='/main'" class="px-4 py-2 bg-white border border-slate-200 rounded-lg shadow-sm hover:bg-slate-50 transition">Go to Lexicon</button>
+            </div>
+        </header>
+
+        <main id="main-content"></main>
+    </div>
+</body>
+</html>
