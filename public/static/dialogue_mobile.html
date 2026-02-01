@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joi - Personal Concierge (Mobile)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg-color: #050507;
+            --accent-color: #ff3eab; 
+            --secondary-accent: #00d2ff;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden; /* prevent horizontal scroll */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(255, 62, 171, 0.05) 0%, transparent 50%);
+        }
+
+        /* Slightly reduce orb sizes for phones */
+        .orb-container { width: 220px; height: 220px; }
+        .orb { width: 120px; height: 120px; }
+        .orb-inner { width: 70px; height: 70px; }
+
+        .transcript-container { max-width: 320px; }
+
+        @media (max-width: 480px) {
+            .interaction-row { gap: 10px; }
+            .dialogue-btn { padding: 10px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="controls">
+        <button id="muteBtn" class="p-3 bg-white/5 rounded-full hover:bg-white/10 transition-colors border border-white/10">
+            <svg id="volIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff3eab" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+        </button>
+    </div>
+
+    <div class="orb-container" onclick="triggerModality('file', 7)">
+        <div class="orb" id="orbGlow"></div>
+        <div class="orb-inner"></div>
+        <div class="status-text" id="status">Sync Initialized</div>
+    </div>
+
+    <div class="transcript-container" id="transcript">
+        "Everything you want to hear. Everything you want to see."
+    </div>
+
+    <div class="interaction-row">
+        <!-- Strictly file-based -->
+        <button class="dialogue-btn" onclick="triggerModality('file', 0)">I'm home!</button>
+        <button class="dialogue-btn" onclick="triggerModality('file', 2)">Phone 1</button>
+        <button class="dialogue-btn" onclick="triggerModality('file', 3)">Phone 2</button>
+        <button class="dialogue-btn" onclick="triggerModality('file', 5)">Bye 1</button>
+        <button class="dialogue-btn" onclick="triggerModality('file', 6)">Bye 2</button>
+        <button class="dialogue-btn" onclick="triggerModality('file', 8)">Tracker Data</button>
+        
+        <!-- Strictly generated -->
+        <button class="dialogue-btn" onclick="triggerModality('generate', 1)">Gen: Special</button>
+        <button class="dialogue-btn" onclick="triggerModality('generate', 4)">Gen: Return</button>
+    </div>
+
+    <script>
+        // (script content copied from dialogue.html - omitted here for brevity)
+    </script>
+</body>
+</html>

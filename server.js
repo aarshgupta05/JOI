@@ -37,6 +37,24 @@ app.use('/data', express.static('data'));
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+// Serve uploaded files (audio, images, etc.) from /audio
+// Files stored on disk in the `uploads/` folder will be reachable at URLs starting with /audio/
+app.use('/audio', express.static(path.join(__dirname, 'uploads')));
+
+// Helper: mobile UA detection and mobile-aware file resolver
+function isMobileUA(ua) {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua || '');
+}
+
+function sendMobileAwareFile(req, res, desktopFilename, mobileFilename) {
+  const ua = req.headers['user-agent'] || '';
+  const useMobile = isMobileUA(ua);
+  const fileToSend = useMobile && mobileFilename ? mobileFilename : desktopFilename;
+  const filePath = path.join(__dirname, 'public', 'static', fileToSend);
+  if (fs.existsSync(filePath)) return res.sendFile(filePath);
+  // fallback to desktop if mobile file missing
+  return res.sendFile(path.join(__dirname, 'public', 'static', desktopFilename));
+}
 
 // Rate-limiting middleware for login route
 const loginLimiter = rateLimit({
@@ -64,7 +82,7 @@ app.get('/', (req, res) => {
 // Home route with login check
 app.get('/home', (req, res) => {
   if (req.session.loggedIn) {
-    res.sendFile(path.join(__dirname, 'public', 'static', 'home.html'));
+    return sendMobileAwareFile(req, res, 'home.html', 'home_mobile.html');
   } else {
     res.redirect('/login');
   }
@@ -72,7 +90,7 @@ app.get('/home', (req, res) => {
 
 app.get('/standby', (req, res) => {
   if (req.session.loggedIn) {
-    res.sendFile(path.join(__dirname, 'public', 'static', 'standbyclock.html'));
+    return sendMobileAwareFile(req, res, 'standbyclock.html', 'standbyclock_mobile.html');
   } else {
     res.redirect('/login');
   }
@@ -80,23 +98,27 @@ app.get('/standby', (req, res) => {
 
 app.get('/main', (req, res) => {
   if (req.session.loggedIn) {
-    res.sendFile(path.join(__dirname, 'public', 'static', 'main.html'));
+    return sendMobileAwareFile(req, res, 'main.html', 'main_mobile.html');
   } else {
     res.redirect('/login');
   }
 });
 
 app.get('/flashcards', (req, res) => {
-  if (req.session.loggedIn) {
-    res.sendFile(path.join(__dirname, 'public', 'static', 'flashcards.html'));
-  } else {
-    res.redirect('/login');
+  if (!req.session.loggedIn) {
+    return res.redirect('/login');
   }
+
+  // Simple mobile user-agent detection: serve a mobile-optimized page when accessed from phones
+  const ua = req.headers['user-agent'] || '';
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+  const fileName = isMobile ? 'flashcards_mobile.html' : 'flashcards.html';
+  res.sendFile(path.join(__dirname, 'public', 'static', fileName));
 });
 
 app.get('/lexipractice', (req, res) => {
   if (req.session.loggedIn) {
-    res.sendFile(path.join(__dirname, 'public', 'static', 'LexiPractice.html'));
+    return sendMobileAwareFile(req, res, 'LexiPractice.html', 'LexiPractice_mobile.html');
   } else {
     res.redirect('/login');
   }
@@ -104,7 +126,15 @@ app.get('/lexipractice', (req, res) => {
 
 app.get('/lexicon-mastery', (req, res) => {
   if (req.session.loggedIn) {
-    res.sendFile(path.join(__dirname, 'public', 'static', 'Lexicon Mastery.html'));
+    return sendMobileAwareFile(req, res, 'Lexicon Mastery.html', 'Lexicon Mastery_mobile.html');
+  } else {
+    res.redirect('/login');
+  }
+});
+
+app.get('/dialogue', (req, res) => {
+  if (req.session.loggedIn) {
+    return sendMobileAwareFile(req, res, 'dialogue.html', 'dialogue_mobile.html');
   } else {
     res.redirect('/login');
   }
@@ -112,11 +142,11 @@ app.get('/lexicon-mastery', (req, res) => {
 
 // Serve combined login/signup page for both routes
 app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'static', 'loginsignup.html'));
+  return sendMobileAwareFile(req, res, 'loginsignup.html', 'loginsignup_mobile.html');
 });
 
 app.get('/signup', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'static', 'loginsignup.html'));
+  return sendMobileAwareFile(req, res, 'loginsignup.html', 'loginsignup_mobile.html');
 });
 
 // Login post with rate limiting

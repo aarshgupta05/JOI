@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LexiPractice Suite | Pro Hybrid (Mobile)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        :root { --primary: #6366f1; --primary-hover: #4f46e5; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: radial-gradient(circle at top right, #f8fafc, #f1f5f9); overflow-x: hidden; }
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        @media (max-width:480px) { .max-w-4xl, .max-w-2xl, .max-w-3xl { max-width: 420px !important; } .p-8 { padding: 1rem !important; } }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 pb-20">
+
+    <div id="app" class="max-w-4xl mx-auto p-4 md:p-8 animate__animated animate__fadeIn">
+        <!-- Content mirrors desktop LexiPractice with mobile-friendly constraints -->
+        <header class="mb-12 text-center relative">
+            <div class="absolute -top-10 left-1/2 -translate-x-1/2 w-32 h-32 bg-indigo-100 blur-3xl opacity-50 rounded-full -z-10"></div>
+            <h1 class="text-5xl font-extrabold text-slate-900 tracking-tight mb-3">Lexi<span class="text-indigo-600">Practice</span></h1>
+            <p class="text-slate-500 font-medium">Elevate your linguistic precision with AI-driven analysis.</p>
+        </header>
+
+        <nav class="flex justify-center space-x-2 mb-10 p-1.5 bg-slate-100/50 rounded-3xl max-w-sm mx-auto backdrop-blur-sm">
+            <button onclick="window.location.href='/main'" class="flex-1 py-2.5 rounded-2xl font-semibold transition-all duration-300 text-sm">Return to Lexicon</button>
+            <button onclick="switchTab('manage')" class="flex-1 py-2.5 rounded-2xl font-semibold transition-all duration-300 text-sm" id="tab-manage">Lexicon</button>
+            <button onclick="switchTab('test')" class="flex-1 py-2.5 rounded-2xl font-semibold transition-all duration-300 text-sm" id="tab-test">Assessment</button>
+            <button onclick="switchTab('history')" class="flex-1 py-2.5 rounded-2xl font-semibold transition-all duration-300 text-sm" id="tab-history">Archives</button>
+        </nav>
+
+        <section id="section-manage" class="space-y-8 animate__animated animate__fadeInUp">
+            <div class="glass p-8 rounded-3xl shadow-xl border border-white">
+                <h2 class="text-xl font-bold mb-6 flex items-center gap-2">Expand Vocabulary</h2>
+                <div class="flex gap-3 mb-6">
+                    <input type="text" id="new-word" placeholder="Enter a sophisticated term..." class="flex-1 px-2 py-3 bg-white/50 border border-slate-200 rounded-2xl">
+                    <button onclick="addWord()" class="bg-indigo-600 text-white px-4 py-3 rounded-2xl">Add</button>
+                </div>
+                <div class="relative">
+                    <textarea id="import-area" rows="3" placeholder="Bulk import (e.g., Ephemeral, Mellifluous...)" class="w-full px-5 py-4 bg-white/50 border border-slate-200 rounded-2xl"></textarea>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // Minimal reproduction of LexiPractice JS can be wired in if mobile-specific tweaks are needed.
+    </script>
+</body>
+</html>

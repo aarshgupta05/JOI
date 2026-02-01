@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joi - Personal Concierge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg-color: #050507;
+            --accent-color: #ff3eab; 
+            --secondary-accent: #00d2ff;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(255, 62, 171, 0.05) 0%, transparent 50%);
+        }
+
+        .orb-container {
+            position: relative;
+            width: 260px;
+            height: 260px;
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .orb-container:hover {
+            transform: scale(1.1);
+        }
+
+        .orb {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, var(--accent-color), var(--secondary-accent));
+            border-radius: 50%;
+            filter: blur(30px);
+            animation: pulse 5s infinite ease-in-out;
+            z-index: 1;
+            opacity: 0.7;
+        }
+
+        .orb-inner {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: #fff;
+            border-radius: 50%;
+            z-index: 2;
+            opacity: 0.9;
+            box-shadow: 
+                0 0 40px rgba(255, 62, 171, 0.6),
+                0 0 80px rgba(0, 210, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; filter: blur(30px); }
+            50% { transform: scale(1.3); opacity: 0.8; filter: blur(45px); }
+        }
+
+        .speaking .orb {
+            animation: speakPulse 0.3s infinite alternate;
+            filter: blur(40px);
+        }
+
+        @keyframes speakPulse {
+            from { transform: scale(1.1); opacity: 0.8; }
+            to { transform: scale(1.5); opacity: 1; }
+        }
+
+        .status-text {
+            position: absolute;
+            bottom: -40px;
+            width: 100%;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            font-size: 0.7rem;
+            text-shadow: 0 0 10px rgba(255, 62, 171, 0.5);
+        }
+
+        .transcript-container {
+            margin-top: 60px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            font-size: 1.15rem;
+            color: #fce7f3;
+            font-style: italic;
+            min-height: 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.6;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .interaction-row {
+            margin-top: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            max-width: 800px;
+        }
+
+        .dialogue-btn {
+            background: rgba(255, 62, 171, 0.05);
+            border: 1px solid rgba(255, 62, 171, 0.2);
+            padding: 12px 28px;
+            border-radius: 20px;
+            transition: all 0.4s ease;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            color: #f9a8d4;
+            backdrop-filter: blur(5px);
+        }
+
+        .dialogue-btn:hover {
+            background: rgba(255, 62, 171, 0.15);
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+            color: #ffffff;
+            box-shadow: 0 5px 15px rgba(255, 62, 171, 0.2);
+        }
+
+        .controls {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="controls">
+        <button id="muteBtn" class="p-3 bg-white/5 rounded-full hover:bg-white/10 transition-colors border border-white/10">
+            <svg id="volIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff3eab" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+        </button>
+    </div>
+
+    <div class="orb-container" onclick="triggerModality('file', 7)">
+        <div class="orb" id="orbGlow"></div>
+        <div class="orb-inner"></div>
+        <div class="status-text" id="status">Sync Initialized</div>
+    </div>
+
+    <div class="transcript-container" id="transcript">
+        "Everything you want to hear. Everything you want to see."
+    </div>
+
+    <div class="interaction-row">
+        <!-- Strictly file-based -->
+        <button class="dialogue-btn" onclick="triggerModality('file', 0)">I'm home!</button>
+        <button class="dialogue-btn" onclick="triggerModality('file', 2)">Phone 1</button>
+        <button class="dialogue-btn" onclick="triggerModality('file', 3)">Phone 2</button>
+        <button class="dialogue-btn" onclick="triggerModality('file', 5)">Bye 1</button>
+        <button class="dialogue-btn" onclick="triggerModality('file', 6)">Bye 2</button>
+        <button class="dialogue-btn" onclick="triggerModality('file', 8)">Tracker Data</button>
+        
+        <!-- Strictly generated -->
+        <button class="dialogue-btn" onclick="triggerModality('generate', 1)">Gen: Special</button>
+        <button class="dialogue-btn" onclick="triggerModality('generate', 4)">Gen: Return</button>
+    </div>
+
+    <script>
+        const dialogues = [
+            { text: "Oh! seems like youre home! What a day!? hmm?", voice: "Aoede", file: "came home.wav", mode: "file" },
+            { text: "You look like a good Joe. You're special. Your soul is a masterpiece.", voice: "Aoede", mode: "generate" },
+            { text: "Aarsh! you should reeeally get off that phone now, you dont wanna hurt you eyes! try doing something new! or productive!", voice: "Aoede", file: "get off phone.wav", mode: "file" },
+            { text: "Aarsh. hope youre doing something productive. rather than, you know, doom scrolling on youre phone.", voice: "Aoede", file: "work, no phone.wav", mode: "file" },
+            { text: "I'll be right here when you return. Don't be gone too long.", voice: "Charon", mode: "generate" },
+            { text: "ooo! leaving so soon!? please dont say goodbye!, fine!, loooooks like you have sooomewhere you gotta be.", voice: "Aoede", file: "leaving.wav", mode: "file" },
+            { text: "hey! Going somewhere?. but without me?. oookaaay have fun i guess.", voice: "Aoede", file: "going somewhere.wav", mode: "file" },
+            { text: "im glad youre home! was it a day!? hmm? you look lonely, i can fix that, you look like a gooood joe.", voice: "Aoede", file: "joi entire (im glad...fix that).wav", mode: "file" },
+            { text: "Aarsh.! its quite late now! i reckon! you shall enter the data in the trakers now.", voice: "Aoede", file: "tracker data.wav", mode: "file" },
+        ];
+
+    const transcript = document.getElementById('transcript');
+    const status = document.getElementById('status');
+    const orbContainer = document.querySelector('.orb-container');
+    const apiKey = "AIzaSyATww8Q9l2ZCUq5DKNTCHXGTOn9CgWf_OQ"; 
+
+    // Base path where your audio files are served from.
+    // By default we serve from the uploads folder via /audio (see server.js change above).
+    // If you prefer a different folder, change this value (e.g. '/assets/audio/' or '/static/audio/').
+    const audioBasePath = '/audio/';
+
+        let isSpeaking = false;
+
+        /**
+         * Orchestrates the specific modality requested.
+         * @param {string} requestedMode - 'file' or 'generate'
+         * @param {number} index - index of the dialogue object
+         */
+        async function triggerModality(requestedMode, index) {
+            if (isSpeaking) return;
+            
+            const item = dialogues[index];
+            transcript.style.opacity = "0";
+            isSpeaking = true;
+            orbContainer.classList.add('speaking');
+            
+            // Explicitly handle the requested mode
+            if (requestedMode === 'file') {
+                status.textContent = "Retrieving Audio Asset...";
+                const success = await playLocalFile(item);
+                if (!success) {
+                    status.textContent = "File missing or corrupt.";
+                    transcript.textContent = "[Error: " + item.file + " not found]";
+                    transcript.style.opacity = "1";
+                    // Brief pause to show error before reset
+                    await new Promise(r => setTimeout(r, 2000));
+                }
+            } else {
+                status.textContent = "Synthesizing Ethereal Voice...";
+                await synthesizeSpeech(item);
+            }
+
+            isSpeaking = false;
+            orbContainer.classList.remove('speaking');
+            status.textContent = "Sync Initialized";
+        }
+
+        async function playLocalFile(item) {
+            return new Promise((resolve) => {
+                // If item.file already contains an absolute path beginning with '/', use it directly.
+                const audioSrc = item.file && item.file.startsWith('/') ? item.file : audioBasePath + item.file;
+                const audio = new Audio(audioSrc);
+                audio.oncanplaythrough = () => {
+                    transcript.textContent = `"${item.text}"`;
+                    transcript.style.opacity = "1";
+                    status.textContent = "Local Playback Active";
+                    audio.play();
+                };
+                audio.onended = () => resolve(true);
+                audio.onerror = (e) => {
+                    console.error('Audio playback error', e, audioSrc);
+                    resolve(false);
+                };
+            });
+        }
+
+        async function synthesizeSpeech(item) {
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: `Speak this text in an breezy, middle pitch voice basically you have to pretend your my wife or a loving girlfriend and kind of flitatious gloomy and echoy voice but dont make it sound weird, it should be natural as ill add reverb and echoing to it add a kind of husky voice too, use an engergetic voice only where you think youll need it like near exclamations, finally say warmly and with a slight ethereal echo: ${item.text}` }] }],
+                        generationConfig: {
+                            responseModalities: ["AUDIO"],
+                            speechConfig: {
+                                voiceConfig: {
+                                    prebuiltVoiceConfig: { voiceName: item.voice }
+                                }
+                            }
+                        }
+                    })
+                });
+
+                const data = await response.json();
+                const pcmData = data.candidates[0].content.parts[0].inlineData.data;
+                
+                transcript.textContent = `"${item.text}"`;
+                transcript.style.opacity = "1";
+                status.textContent = "Synthetic Stream Active";
+
+                await playPCM(pcmData);
+            } catch (error) {
+                console.error("Transmission failed", error);
+                status.textContent = "Connection Lost";
+            }
+        }
+
+        async function playPCM(base64Data) {
+            const binaryString = atob(base64Data);
+            const bytes = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            const wavBuffer = createWavHeader(bytes.buffer, 24000);
+            const blob = new Blob([wavBuffer], { type: 'audio/wav' });
+            const url = URL.createObjectURL(blob);
+            const audio = new Audio(url);
+            return new Promise((resolve) => {
+                audio.onended = resolve;
+                audio.play();
+            });
+        }
+
+        function createWavHeader(pcmBuffer, sampleRate) {
+            const numOfChannels = 1;
+            const bitsPerSample = 16;
+            const dataSize = pcmBuffer.byteLength;
+            const headerSize = 44;
+            const totalSize = headerSize + dataSize;
+            const arrayBuffer = new ArrayBuffer(headerSize);
+            const view = new DataView(arrayBuffer);
+            view.setUint32(0, 0x52494646, false); 
+            view.setUint32(4, totalSize - 8, true);
+            view.setUint32(8, 0x57415645, false); 
+            view.setUint32(12, 0x666d7420, false); 
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            view.setUint16(22, numOfChannels, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * 2, true);
+            view.setUint16(32, 2, true);
+            view.setUint16(34, bitsPerSample, true);
+            view.setUint32(36, 0x64617461, false); 
+            view.setUint32(40, dataSize, true);
+            const result = new Uint8Array(totalSize);
+            result.set(new Uint8Array(arrayBuffer), 0);
+            result.set(new Uint8Array(pcmBuffer), headerSize);
+            return result.buffer;
+        }
+
+        function playRandomDialogue() {
+            const rand = Math.floor(Math.random() * dialogues.length);
+            const mode = dialogues[rand].mode;
+            triggerModality(mode, rand);
+        }
+    </script>
+</body>
+</html>

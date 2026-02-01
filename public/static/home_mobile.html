@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Home — JOI Automation</title>
+  <title>Home — JOI Automation (Mobile)</title>
   <link rel="stylesheet" href="../Style/home.css" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -12,6 +12,7 @@
         body { 
             font-family: 'Inter', sans-serif; 
             scroll-behavior: smooth;
+            overflow-x: hidden; /* prevent sideways scroll on phones */
         }
 
         .serif { font-family: 'Playfair Display', serif; }
@@ -26,6 +27,13 @@
         .gradient-bg {
             background: radial-gradient(circle at 0% 0%, #fdfbfb 0%, #ebedee 100%);
             background-attachment: fixed;
+        }
+
+        /* Mobile constraints */
+        @media (max-width: 480px) {
+            .max-w-5xl { max-width: 420px !important; }
+            .p-4 { padding: 1rem !important; }
+            .md\:p-8 { padding: 1rem !important; }
         }
     </style>
 </head>
